@@ -1,7 +1,7 @@
 from flask import Flask, render_template
-import turtle
+from turtle import *
 import os
-import math
+from math import *
 
 app = Flask(__name__)
 
@@ -10,52 +10,58 @@ def index():
     # Código para crear el girasol
     # Aquí va tu código de turtle
     # Guarda la imagen como un archivo
-    turtle.setup(width=800, height=600)
-    turtle.speed(0)
-    turtle.bgcolor('black')
-    name = input('Ingrese tu nombre: ').upper()
-
+    setup(width=800, height=600)
+    speed(0)
+    bgcolor('black')
+    goto(0,-40)
+    name = input('Ingrese tu nombre :').upper()
     # Dibujo de los pétalos
     for i in range(16):
         for j in range(18):
-            turtle.color('#FFA216')
-            turtle.rt(90)
-            turtle.circle(150 - j * 6, 90)
-            turtle.lt(90)
-            turtle.circle(150 - j * 6, 90)
-            turtle.rt(180)
-        turtle.circle(40, 24)
+            color('#FFA216')
+            rt(90)
+            circle(150 - j * 6, 90)
+            lt(90)
+            circle(150 - j * 6, 90)
+            rt(180)
+        circle(40, 24)
 
     # Dibujo del centro del girasol
-    turtle.color('black')
-    turtle.shape('circle')
-    turtle.shapesize(0.5)
-    turtle.fillcolor('#BB4513')
+    color('black')
+    shape('circle')
+    shapesize(0.5)
+    fillcolor('#BB4513')
 
     # Dibujo de las semillas en espiral
     golden_ang = 137.508
-    phi = golden_ang * (3.14159 / 180)
+    phi = golden_ang * (pi / 180)
 
     for i in range(140):
-        r = 4 * (i ** 0.5)
+        r = 4 * sqrt(i)
         theta = i * phi
-        x = r * (3.14159 ** 0.5)
-        y = r * (3.14159 ** 0.5)
-        turtle.penup()
-        turtle.goto(x, y)
-        turtle.setheading(i * golden_ang)
-        turtle.pendown()
-        turtle.stamp()
+        x = r * cos(theta)
+        y = r * sin(theta)
+        penup()
+        goto(x, y)
+        setheading(i * golden_ang)
+        pendown()
+        stamp()
 
     # Dibujo de la palabra "AMISTAD"
-    turtle.penup()
-    turtle.goto(0, -50)
-    turtle.pendown()
-    turtle.color('white')
-    turtle.write(name, align="center", font=("Arial", 24, "bold"))
-
+    # Función para dibujar la palabra "AMISTAD"
+    def draw_text(x, y):
+        penup()
+        goto(x, y + 45)
+        pendown()
+        color('white')
+        write(str("Feliz Día ") + name, align="center", font=("Arial", 20, "bold"))
+    
+    # Llamada a las funciones de dibujo
+    draw_text(0, -50)  # Posición de la palabra
+    
     # Mantener la ventana abierta
-    turtle.done()
+    done()
+    
     return "Dibujo completo"
 
 if __name__ == '__main__':
