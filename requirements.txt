@@ -1,4 +1,0 @@
-Flask
-turtle
-os
-math
