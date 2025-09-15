@@ -19,17 +19,45 @@
       transform: translate(-50%, -50%);
       color: white;
       font-family: Arial, sans-serif;
-      font-size: 48px;
+      font-size: 40px;
       font-weight: bold;
+      text-align: center;
+      width: 80%;
       text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+      z-index: 2;
+    }
+    .word {
+      position: absolute;
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      color: #FFD700;
+      opacity: 0.9;
+      text-shadow: 0 0 5px #FFA500, 0 0 10px #FF4500;
+      animation: floatUp 6s linear forwards;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200px);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="title">Tulipanes</div>
+  <div class="title" id="title"></div>
   <canvas id="canvas"></canvas>
 
   <script>
+    // ✍️ Preguntar nombre
+    const nombre = prompt("¿Cuál es tu nombre?") || "Amigo";
+    document.getElementById("title").innerText = `${nombre}, que tu sonrisa florezca hoy.`;
+
+    // 🎨 Configuración del canvas
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let w, h;
@@ -40,6 +68,7 @@
     window.addEventListener("resize", resize);
     resize();
 
+    // 🌼 Clase Tulip
     class Tulip {
       constructor() {
         this.x = Math.random() * w;
@@ -57,8 +86,8 @@
         ctx.lineTo(this.x, this.y - this.stemHeight);
         ctx.stroke();
 
-        // Flor (tulipán amarillo)
-        ctx.fillStyle = "#FFD700"; 
+        // Flor
+        ctx.fillStyle = "#FFD700";
         ctx.beginPath();
         ctx.moveTo(this.x, this.y - this.stemHeight);
         ctx.bezierCurveTo(
@@ -84,10 +113,9 @@
       }
     }
 
+    // 🌷 Generar tulipanes
     const tulips = [];
-    for (let i = 0; i < 80; i++) {
-      tulips.push(new Tulip());
-    }
+    for (let i = 0; i < 80; i++) tulips.push(new Tulip());
 
     function animate() {
       ctx.clearRect(0, 0, w, h);
@@ -95,6 +123,26 @@
       requestAnimationFrame(animate);
     }
     animate();
+
+    // 💫 Palabras emergentes
+    const words = ["Amistad", "Love", "Alegría", "Paz", "Felicidad", "Esperanza", "Sueños"];
+    
+    function createWord() {
+      const word = document.createElement("div");
+      word.className = "word";
+      word.innerText = words[Math.floor(Math.random() * words.length)];
+      word.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      word.style.top = (window.innerHeight - 100) + "px";
+      document.body.appendChild(word);
+
+      // Eliminar palabra cuando termine animación
+      setTimeout(() => {
+        word.remove();
+      }, 6000);
+    }
+
+    // Crear palabras cada cierto tiempo
+    setInterval(createWord, 2000);
   </script>
 </body>
 </html>
