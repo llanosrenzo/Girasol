@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Girasol</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    canvas {
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+
+  <script>
+    const name = prompt("Ingrese tu nombre:").toUpperCase();
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+    ctx.translate(w/2, h/2); // mover origen al centro
+
+    // 🌼 Dibujar pétalos
+    for (let i=0; i<16; i++) {
+      for (let j=0; j<18; j++) {
+        ctx.strokeStyle = "#FFA216";
+        ctx.beginPath();
+        ctx.arc(0,0,150 - j*6, Math.PI/2, Math.PI); 
+        ctx.arc(0,0,150 - j*6, Math.PI, 3*Math.PI/2);
+        ctx.stroke();
+      }
+      ctx.rotate((24 * Math.PI)/180); // rotar 24°
+    }
+
+    // 🌻 Semillas en espiral (Fibonacci)
+    const goldenAngle = 137.508 * Math.PI/180;
+    for (let i=0; i<140; i++) {
+      const r = 4 * Math.sqrt(i);
+      const theta = i * goldenAngle;
+      const x = r * Math.cos(theta);
+      const y = r * Math.sin(theta);
+
+      ctx.fillStyle = "#BB4513";
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    // ✍️ Texto (nombre)
+    ctx.fillStyle = "white";
+    ctx.font = "bold 20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(name, 0, 200);
+  </script>
+</body>
+</html>
