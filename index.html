@@ -18,46 +18,69 @@
   </style>
 </head>
 <body>
-  <canvas id="canvas" width="600" height="600"></canvas>
+  <canvas id="canvas" width="700" height="700"></canvas>
 
   <script>
-    const name = prompt("Ingrese tu nombre:").toUpperCase();
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     const w = canvas.width, h = canvas.height;
-    ctx.translate(w/2, h/2); // mover origen al centro
+    ctx.translate(w/2, h/2); // origen al centro
 
     // 🌼 Dibujar pétalos
-    for (let i=0; i<16; i++) {
-      for (let j=0; j<18; j++) {
-        ctx.strokeStyle = "#FFA216";
+    function drawPetals() {
+      const numPetals = 36;
+      const radius = 200;
+      for (let i=0; i<numPetals; i++) {
+        const angle = (2 * Math.PI / numPetals) * i;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
         ctx.beginPath();
-        ctx.arc(0,0,150 - j*6, Math.PI/2, Math.PI); 
-        ctx.arc(0,0,150 - j*6, Math.PI, 3*Math.PI/2);
-        ctx.stroke();
+        ctx.ellipse(0, 0, 30, 80, 0, 0, Math.PI*2);
+        ctx.fillStyle = "#FFA216"; // amarillo
+        ctx.fill();
+        ctx.restore();
       }
-      ctx.rotate((24 * Math.PI)/180); // rotar 24°
     }
 
     // 🌻 Semillas en espiral (Fibonacci)
-    const goldenAngle = 137.508 * Math.PI/180;
-    for (let i=0; i<140; i++) {
-      const r = 4 * Math.sqrt(i);
-      const theta = i * goldenAngle;
-      const x = r * Math.cos(theta);
-      const y = r * Math.sin(theta);
+    function drawSeeds() {
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ángulo áureo
+      for (let i = 0; i < 500; i++) {
+        const r = Math.sqrt(i) * 6;
+        const theta = i * goldenAngle;
+        const x = r * Math.cos(theta);
+        const y = r * Math.sin(theta);
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = "#5A381E"; // marrón oscuro
+        ctx.fill();
+      }
+    }
 
-      ctx.fillStyle = "#BB4513";
+    // 🌑 Disco central
+    function drawCenter() {
       ctx.beginPath();
-      ctx.arc(x, y, 3, 0, Math.PI*2);
+      ctx.arc(0, 0, 120, 0, Math.PI*2);
+      ctx.fillStyle = "#8B4513"; // marrón
       ctx.fill();
     }
 
-    // ✍️ Texto (nombre)
-    ctx.fillStyle = "white";
-    ctx.font = "bold 20px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText(name, 0, 200);
+    // ✍️ Texto
+    function drawText() {
+      ctx.fillStyle = "white";
+      ctx.font = "bold 24px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("AMISTAD", 0, 260);
+    }
+
+    // Dibujar todo
+    drawPetals();
+    drawCenter();
+    drawSeeds();
+    drawText();
   </script>
 </body>
 </html>
