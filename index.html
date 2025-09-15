@@ -31,20 +31,9 @@
       font-family: Arial, sans-serif;
       font-size: 22px;
       font-weight: bold;
-      color: #FFD700;
       opacity: 0.9;
       text-shadow: 0 0 5px #FFA500, 0 0 10px #FF4500;
-      animation: floatUp 6s linear forwards;
-    }
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-200px);
-        opacity: 0;
-      }
+      pointer-events: none;
     }
   </style>
 </head>
@@ -125,24 +114,51 @@
     animate();
 
     // 💫 Palabras emergentes
-    const words = ["Amistad", "Love", "Alegría", "Paz", "Felicidad", "Esperanza", "Sueños"];
-    
+    const words = [
+      "Amistad", "Love", "Alegría", "Paz", "Felicidad", "Esperanza", "Sueños",
+      "Complicidad", "Sonrisa", "Abrazos", "Recuerdos", "Magia", "Cariño", "Luz",
+      "Gratitud", "Energía", "Sueña en grande", "Sonríe"
+    ];
+
+    const colors = ["#FFD700", "#FF69B4", "#87CEEB", "#ADFF2F", "#FF4500", "#BA55D3", "#00FA9A"];
+
     function createWord() {
       const word = document.createElement("div");
       word.className = "word";
       word.innerText = words[Math.floor(Math.random() * words.length)];
-      word.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      word.style.top = (window.innerHeight - 100) + "px";
+
+      // Posición aleatoria en pantalla
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 100);
+      word.style.left = `${x}px`;
+      word.style.top = `${y}px`;
+
+      // Color aleatorio
+      word.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+      // Animación: flotar hacia arriba y desvanecerse
+      word.animate(
+        [
+          { transform: "translateY(0)", opacity: 1 },
+          { transform: "translateY(-120px)", opacity: 0 }
+        ],
+        {
+          duration: 4000,
+          easing: "ease-out",
+          fill: "forwards"
+        }
+      );
+
       document.body.appendChild(word);
 
-      // Eliminar palabra cuando termine animación
+      // Eliminar palabra tras animación
       setTimeout(() => {
         word.remove();
-      }, 6000);
+      }, 4000);
     }
 
     // Crear palabras cada cierto tiempo
-    setInterval(createWord, 2000);
+    setInterval(createWord, 1500);
   </script>
 </body>
 </html>
